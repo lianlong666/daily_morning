@@ -83,6 +83,16 @@ def get_words():
   if words.status_code != 200:
     return get_words()
   return words.json()['data']['text']
+
+# 获取当日日期
+def get_date():
+  week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
+  year = localtime().tm_year
+  month = localtime().tm_mon
+  day = localtime().tm_mday
+  today = datetime.date(datetime(year=year, month=month, day=day))
+  week = week_list[today.isoweekday() % 7]
+  return "{} {}".format(today, week)
   
 # 颜色
 def get_random_color():
@@ -91,8 +101,10 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
+
 # 传入地区获取天气信息
 weather, temp, wind_dir = get_weather(city)
-data = {"city":{"value":city,"color": get_random_color()},"weather":{"value":weather,"color": get_random_color()},"temp":{"value":temp,"color": get_random_color()},"wind_dir":{"value":wind_dir,"color": get_random_color()},"love_days":{"value":get_count(),"color": get_random_color()},"birthday":{"value":get_birthday(),"color": get_random_color()},"words":{"value":get_words(), ,"color": get_random_color()}}
+
+data = {"date": {"value":get_date() ,"color": get_random_color()},"city":{"value":city,"color": get_random_color()},"weather":{"value":weather,"color": get_random_color()},"temp":{"value":temp,"color": get_random_color()},"wind_dir":{"value":wind_dir,"color": get_random_color()},"love_days":{"value":get_count(),"color": get_random_color()},"birthday":{"value":get_birthday(),"color": get_random_color()},"words":{"value":get_words(), ,"color": get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
