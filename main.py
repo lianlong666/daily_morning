@@ -33,7 +33,7 @@ def get_weather():
   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
   res = requests.get(url).json()
   weather = res['data']['list'][0]
-  return weather['weather'], math.floor(weather['temp'])
+  return weather['weather'], math.floor(weather['temp']), math.floor(weather['wind'])
 
 # 在一起时间
 def get_count():
@@ -72,7 +72,7 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 # 传入地区获取天气信息
-weather, temp, wind_dir = get_weather(city)
-data = {"date": {"value":get_date(),"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"weather":{"value":weather,"color":get_random_color()},"temp":{"value":temp,"color":get_random_color()},"wind_dir":{"value":wind_dir,"color":get_random_color()},"love_days":{"value":get_count(),"color": get_random_color()},"birthday":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(),"color":get_random_color()}}
+weather, temp, wind = get_weather(city)
+data = {"date": {"value":get_date(),"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"weather":{"value":weather,"color":get_random_color()},"temp":{"value":temp,"color":get_random_color()},"wind":{"value":wind,"color":get_random_color()},"love_days":{"value":get_count(),"color": get_random_color()},"birthday":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(),"color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
