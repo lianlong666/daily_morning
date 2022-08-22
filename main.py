@@ -42,28 +42,27 @@ def get_weather(city):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
-    key = weather_key
-    region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(city, key)
-    response = get(region_url, headers=headers).json()
-    if response["code"] == "404":
+    region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(city, weather_key)
+    city_data = get(region_url, headers=headers).json()
+    if city_data.code == "404":
         print("推送消息失败，请检查地区名是否有误！")
         os.system("pause")
         sys.exit(1)
-    elif response["code"] == "401":
+    elif city_data.code == "401":
         print("推送消息失败，请检查和风天气key是否正确！")
         os.system("pause")
         sys.exit(1)
     else:
         # 获取地区的location--id
-        location_id = response["location"][0]["id"]
-    weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}".format(location_id, key)
-    response = get(weather_url, headers=headers).json()
+        location_id = city_data.location[0].id
+    weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}".format(location_id, weather_key)
+    weather_data = get(weather_url, headers=headers).json()
     # 天气
-    weather = response["now"]["text"]
+    weather = weather_data.now.text
     # 当前温度
-    temp = response["now"]["temp"] + u"\N{DEGREE SIGN}" + "C"
+    temp = weather_data.now.temp + u"\N{DEGREE SIGN}" + "C"
     # 风向
-    wind_dir = response["now"]["windDir"]
+    wind_dir = weather_data.now.windDir
     return weather, temp, wind_dir
 
 # 在一起时间
