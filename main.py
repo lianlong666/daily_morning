@@ -21,8 +21,6 @@ app_secret = os.environ["APP_SECRET"]
 user_id = os.environ["USER_ID"]
 # 模板id
 template_id = os.environ["TEMPLATE_ID"]
-# 和风天气key
-weather_key = os.environ["WEATHER_KEY"]
 
 def get_color():
     # 获取随机颜色
