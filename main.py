@@ -31,40 +31,11 @@ def get_color():
     return random.choice(color_list)
 
 # 天气
-# def get_weather():
-#   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
-#   res = requests.get(url).json()
-#   weather = res['data']['list'][0]
-#   return weather['weather'], math.floor(weather['temp'])
-
-def get_weather(city):
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
-    }
-    key = weather_key
-    region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(city, key)
-    city_data = get(region_url, headers=headers).json()
-    if city_data.code == "404":
-        print("推送消息失败，请检查地区名是否有误！")
-        os.system("pause")
-        sys.exit(1)
-    elif city_data.code == "401":
-        print("推送消息失败，请检查和风天气key是否正确！")
-        os.system("pause")
-        sys.exit(1)
-    else:
-        # 获取地区的location--id
-        location_id = city_data.location[0].id
-    weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}".format(location_id, key)
-    weather_data = get(weather_url, headers=headers).json()
-    # 天气
-    weather = weather_data.now.text
-    # 当前温度
-    temp = weather_data.now.temp + u"\N{DEGREE SIGN}" + "C"
-    # 风向
-    wind_dir = weather_data.now.windDir
-    return weather, temp, wind_dir
+def get_weather():
+  url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+  res = requests.get(url).json()
+  weather = res['data']['list'][0]
+  return weather['weather'], math.floor(weather['temp'])
 
 # 在一起时间
 def get_count():
