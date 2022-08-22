@@ -42,7 +42,8 @@ def get_weather(city):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
-    region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(city, weather_key)
+    key = weather_key
+    region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(city, key)
     city_data = get(region_url, headers=headers).json()
     if city_data.code == "404":
         print("推送消息失败，请检查地区名是否有误！")
@@ -55,7 +56,7 @@ def get_weather(city):
     else:
         # 获取地区的location--id
         location_id = city_data.location[0].id
-    weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}".format(location_id, weather_key)
+    weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}".format(location_id, key)
     weather_data = get(weather_url, headers=headers).json()
     # 天气
     weather = weather_data.now.text
