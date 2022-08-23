@@ -75,5 +75,9 @@ wm = WeChatMessage(client)
 # 传入地区获取天气信息
 weather, temperature, wind_level = get_weather()
 data = {"date": {"value":get_date(),"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"weather":{"value":weather,"color":get_random_color()},"temp":{"value":temperature,"color":get_random_color()},"wind":{"value":wind_level,"color":get_random_color()},"love_days":{"value":get_count(),"color": get_random_color()},"birthday":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(),"color":get_random_color()}}
-res = wm.send_template(user_id, template_id, data)
-print(res)
+users = user_id.split(',')
+for user in users:
+  res = wm.send_template(user_id, template_id, data)
+  print(res)
+
+
